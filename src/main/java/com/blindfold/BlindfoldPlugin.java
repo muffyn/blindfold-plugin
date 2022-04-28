@@ -125,4 +125,23 @@ public class BlindfoldPlugin extends Plugin
 			}
 		}
 	}
+
+	@Subscribe
+	public void onMenuOpened(MenuOpened event) {
+		if (!renderBlindfold || !config.hideMenuEntries())
+		{
+			return;
+		}
+		final MenuEntry firstEntry = event.getFirstEntry();
+		if (firstEntry == null) {
+			return;
+		}
+
+		MenuEntry[] entries = event.getMenuEntries();
+
+		for (MenuEntry entry : entries) {
+			entry.setOption("");
+			entry.setTarget("");
+		}
+	}
 }

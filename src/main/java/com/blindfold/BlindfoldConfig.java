@@ -51,6 +51,16 @@ public interface BlindfoldConfig extends Config
 	)
 	default boolean hideMinimap()
 	{
-		return false;
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hideMenuEntries",
+			name = "Hide MenuEntries",
+			description = "Do not show right click options"
+	)
+	default boolean hideMenuEntries()
+	{
+		return true;
 	}
 }
