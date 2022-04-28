@@ -4,10 +4,19 @@ import com.google.inject.Provides;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.ScriptID;
+import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.minimap.MinimapConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
 
@@ -52,6 +61,7 @@ public class BlindfoldPlugin extends Plugin
 		overlayManager.add(overlay);
 		renderBlindfold = config.defaultState();
 		keyManager.registerKeyListener(hotkeyListener);
+		updateMinimapWidgetVisibility(config.hideMinimap());
 	}
 
 	@Override
@@ -59,11 +69,60 @@ public class BlindfoldPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(hotkeyListener);
+		updateMinimapWidgetVisibility(false);
 	}
 
 	@Provides
 	BlindfoldConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(BlindfoldConfig.class);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(BlindfoldConfig.GROUP))
+		{
+			return;
+		}
+
+		if (event.getKey().equals("hideMinimap"))
+		{
+			updateMinimapWidgetVisibility(config.hideMinimap());
+			return;
+		}
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	{
+		if (scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_REDRAW)
+		{
+			updateMinimapWidgetVisibility(config.hideMinimap());
+		}
+	}
+
+	private void updateMinimapWidgetVisibility(boolean enable)
+	{
+		final Widget resizableStonesWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET);
+
+		if (resizableStonesWidget != null)
+		{
+			resizableStonesWidget.setHidden(enable);
+		}
+
+		final Widget resizableNormalWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_WIDGET);
+
+		if (resizableNormalWidget != null && !resizableNormalWidget.isSelfHidden())
+		{
+			for (Widget widget : resizableNormalWidget.getStaticChildren())
+			{
+				if (widget.getId() != WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON.getId() &&
+						widget.getId() != WidgetInfo.RESIZABLE_MINIMAP_LOGOUT_BUTTON.getId())
+				{
+					widget.setHidden(enable);
+				}
+			}
+		}
 	}
 }

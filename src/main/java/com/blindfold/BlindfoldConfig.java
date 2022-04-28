@@ -7,9 +7,10 @@ import net.runelite.client.config.Keybind;
 
 import java.awt.Color;
 
-@ConfigGroup("blindfold")
+@ConfigGroup(BlindfoldConfig.GROUP)
 public interface BlindfoldConfig extends Config
 {
+	String GROUP = "blindfold";
 	@ConfigItem(
 			keyName = "color",
 			name = "Color",
@@ -41,5 +42,15 @@ public interface BlindfoldConfig extends Config
 	default boolean defaultState()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hideMinimap",
+			name = "Hide minimap",
+			description = "Do not show the minimap on screen (Resizable only)"
+	)
+	default boolean hideMinimap()
+	{
+		return false;
 	}
 }
