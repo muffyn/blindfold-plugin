@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.MenuOpened;
-import net.runelite.api.events.PostHealthBar;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -143,7 +142,6 @@ public class BlindfoldPlugin extends Plugin
 			entry.setTarget("");
 		}
 	}
-
 
 	@Subscribe
 	public void onBeforeMenuRender(BeforeMenuRender event) {

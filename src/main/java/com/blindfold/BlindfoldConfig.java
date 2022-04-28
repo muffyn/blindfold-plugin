@@ -69,7 +69,7 @@ public interface BlindfoldConfig extends Config
 	)
 	default boolean hideMenuEntries()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -79,7 +79,7 @@ public interface BlindfoldConfig extends Config
 	)
 	default boolean hidePlayer()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -102,6 +102,16 @@ public interface BlindfoldConfig extends Config
 	)
 	default int menuAlpha()
 	{
-		return 255;
+		return 0;
+	}
+
+	@ConfigItem(
+			keyName = "hideCrosses",
+			name = "Hide crosses",
+			description = "Do not show yellow/red crosses when clicking"
+	)
+	default boolean hideCrosses()
+	{
+		return false;
 	}
 }
