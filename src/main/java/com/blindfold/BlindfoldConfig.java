@@ -1,9 +1,6 @@
 package com.blindfold;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
+import net.runelite.client.config.*;
 
 import java.awt.Color;
 
@@ -83,5 +80,28 @@ public interface BlindfoldConfig extends Config
 	default boolean hidePlayer()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hideMenu",
+			name = "Hide menu",
+			description = "Do not show menu overlay at all"
+	)
+	default boolean hideMenu()
+	{
+		return false;
+	}
+
+	@Range(
+			max = 255
+	)
+	@ConfigItem(
+			keyName = "menuAlpha",
+			name = "Menu alpha",
+			description = "Configures the transparency of the right-click menu"
+	)
+	default int menuAlpha()
+	{
+		return 255;
 	}
 }

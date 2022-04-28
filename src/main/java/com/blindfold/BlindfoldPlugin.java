@@ -3,10 +3,10 @@ package com.blindfold;
 import com.google.inject.Provides;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.ScriptID;
+import net.runelite.api.*;
+import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.PostHealthBar;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -16,7 +16,6 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.minimap.MinimapConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
 
@@ -144,4 +143,14 @@ public class BlindfoldPlugin extends Plugin
 			entry.setTarget("");
 		}
 	}
+
+
+	@Subscribe
+	public void onBeforeMenuRender(BeforeMenuRender event) {
+		if (config.hideMenu()) {
+			client.drawOriginalMenu(config.menuAlpha());
+			event.consume();
+		}
+	}
+
 }
