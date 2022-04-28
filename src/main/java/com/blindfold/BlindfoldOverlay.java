@@ -46,16 +46,17 @@ public class BlindfoldOverlay extends Overlay
         g.setColor(config.blindfoldColor());
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
 
-        Polygon[] polygons = client.getLocalPlayer().getPolygons();
-        Triangle[] triangles = getTriangles(client.getLocalPlayer().getModel());
+        if (!config.hidePlayer()) {
+            Polygon[] polygons = client.getLocalPlayer().getPolygons();
+            Triangle[] triangles = getTriangles(client.getLocalPlayer().getModel());
 
-        for (int i = 0; i < polygons.length; i++) {
-            Triangle t = triangles[i];
-            if (!(t.getA().getY() == 6 && t.getB().getY() == 6 && t.getC().getY() == 6)) {
-                clearPolygon(image, polygons[i]);
+            for (int i = 0; i < polygons.length; i++) {
+                Triangle t = triangles[i];
+                if (!(t.getA().getY() == 6 && t.getB().getY() == 6 && t.getC().getY() == 6)) {
+                    clearPolygon(image, polygons[i]);
+                }
             }
         }
-
         graphics.drawImage(image, 0, 0, null);
 
         return null;
@@ -71,7 +72,7 @@ public class BlindfoldOverlay extends Overlay
                         && y >= 0
                         && y < client.getCanvasHeight()
                 ) {
-                    image.setRGB((int)x, (int)y, 0x00000000);
+                    image.setRGB((int)x, (int)y, config.playerColor().getRGB() );
                 }
             }
         }

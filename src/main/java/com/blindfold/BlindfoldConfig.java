@@ -13,13 +13,24 @@ public interface BlindfoldConfig extends Config
 	String GROUP = "blindfold";
 	@ConfigItem(
 			keyName = "color",
-			name = "Color",
+			name = "Blindfold Color",
 			description = "The color of the blindfold",
 			position = 0
 	)
 	default Color blindfoldColor()
 	{
-		return new Color(45, 45, 45);
+		return new Color(0, 0, 0);
+	}
+
+	@ConfigItem(
+			keyName = "playerColor",
+			name = "Player color",
+			description = "The color of the player",
+			position = 1
+	)
+	default Color playerColor()
+	{
+		return new Color(0xFF, 0xFF, 0xFF);
 	}
 
 	@ConfigItem(
@@ -60,6 +71,16 @@ public interface BlindfoldConfig extends Config
 			description = "Do not show right click options"
 	)
 	default boolean hideMenuEntries()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hidePlayer",
+			name = "Hide player",
+			description = "Do not show a cutout of the player model"
+	)
+	default boolean hidePlayer()
 	{
 		return true;
 	}
